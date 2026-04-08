@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HYPERFINT LABS — The Physics Layer for AGI</title>
+<meta name="description" content="Grounding-as-a-Service through Level 2 Topological Data. We do not predict. We compute the state of reality.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --obsidian: #08090C;
+  --slate: #12141A;
+  --surface: #1A1C24;
+  --border: #2A2D38;
+  --text-primary: #E8E6E1;
+  --text-secondary: #8A8B91;
+  --text-dim: #5A5B63;
+  --magma: #D14A1F;
+  --magma-glow: #FF6B3D;
+  --teal: #0F6A8B;
+  --teal-light: #1A9EC2;
+  --gold: #C49A3C;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--obsidian);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(8,9,12,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(42,45,56,0.4);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-weight: 500; font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--text-primary);
+}
+.nav-logo span { color: var(--magma); }
+.nav-links { display: flex; gap: 2.5rem; }
+.nav-links a {
+  font-size: 0.78rem; letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--text-primary); }
+.nav-contact {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid var(--magma);
+  color: var(--magma);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: all 0.3s;
+}
+.nav-contact:hover {
+  background: var(--magma);
+  color: var(--obsidian);
+}
+
+/* ── SECTIONS ── */
+section {
+  min-height: 100vh;
+  padding: 8rem 3rem;
+  position: relative;
+}
+
+/* ── HERO ── */
+#hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  padding-top: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0.35;
+}
+.hero-content { position: relative; z-index: 2; max-width: 900px; }
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--magma);
+  border: 1px solid rgba(209,74,31,0.3);
+  padding: 0.5rem 1.2rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--magma-glow);
+}
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s forwards;
+}
+.hero-metric-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s forwards;
+}
+.hero-metric {
+  text-align: center;
+}
+.hero-metric .val {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: block;
+}
+.hero-metric .label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 0.3rem;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.2s forwards;
+}
+.hero-scroll-hint span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+/* ── THESIS ── */
+#thesis {
+  display: flex;
+  align-items: center;
+  gap: 6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.thesis-left { flex: 1; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--magma);
+  margin-bottom: 1.5rem;
+}
+.thesis-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.8rem;
+}
+.thesis-text {
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  margin-bottom: 1.2rem;
+}
+.thesis-right {
+  flex: 1;
+  position: relative;
+}
+.data-layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.data-layer {
+  padding: 1.8rem 2rem;
+  border: 1px solid var(--border);
+  background: var(--slate);
+  transition: all 0.4s;
+  cursor: default;
+}
+.data-layer:hover {
+  border-color: var(--magma);
+  background: rgba(209,74,31,0.05);
+  transform: translateX(8px);
+}
+.data-layer.l2:hover {
+  border-color: var(--teal-light);
+  background: rgba(15,106,139,0.08);
+  box-shadow: 0 0 40px rgba(15,106,139,0.1);
+}
+.layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+.layer-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.layer-tag.owned {
+  color: var(--teal-light);
+}
+.layer-owner {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid;
+}
+.layer-owner.bigtech {
+  color: var(--text-dim);
+  border-color: var(--text-dim);
+}
+.layer-owner.hf {
+  color: var(--teal-light);
+  border-color: var(--teal);
+}
+.layer-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+.layer-examples {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 0.5rem;
+}
+
+/* ── ENGINE ── */
+#engine {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.engine-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 3rem;
+  border: 1px solid var(--border);
+}
+.engine-cell {
+  padding: 2.5rem;
+  background: var(--slate);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+}
+.engine-cell:hover {
+  background: var(--surface);
+}
+.engine-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 0;
+  background: var(--magma);
+  transition: height 0.4s;
+}
+.engine-cell:hover::before { height: 100%; }
+.engine-cell .domain-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.8rem;
+}
+.engine-cell h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+.engine-cell p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+}
+.engine-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+.engine-stat .num {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--teal-light);
+}
+.engine-stat .unit {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.engine-note {
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  border-left: 2px solid var(--magma);
+  background: rgba(209,74,31,0.04);
+}
+.engine-note p {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.engine-note strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* ── GAAS ── */
+#gaas {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.gaas-statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.35;
+  max-width: 800px;
+  margin-bottom: 4rem;
+}
+.gaas-statement em {
+  font-style: italic;
+  color: var(--teal-light);
+}
+.pipeline-visual {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 3rem;
+  border: 1px solid var(--border);
+}
+.pipe-stage {
+  flex: 1;
+  padding: 2.5rem 2rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.pipe-stage:last-child { border-right: none; }
+.pipe-stage::after {
+  content: '→';
+  position: absolute;
+  right: -0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  z-index: 2;
+}
+.pipe-stage:last-child::after { display: none; }
+.pipe-num {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+.pipe-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+.pipe-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.pipe-output {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--teal-light);
+  padding: 0.4rem 0.8rem;
+  background: rgba(15,106,139,0.1);
+  border: 1px solid rgba(15,106,139,0.2);
+  display: inline-block;
+}
+
+.gaas-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border);
+}
+.compare-col {
+  padding: 2.5rem;
+  background: var(--slate);
+}
+.compare-col.enhanced {
+  background: rgba(15,106,139,0.05);
+  border-left: 2px solid var(--teal);
+}
+.compare-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.compare-col:first-child .compare-label { color: var(--text-dim); }
+.compare-col.enhanced .compare-label { color: var(--teal-light); }
+.compare-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+.compare-icon {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+.compare-col:first-child .compare-icon { color: var(--text-dim); }
+.compare-col.enhanced .compare-icon { color: var(--teal-light); }
+
+/* ── PARTNERS ── */
+#partners {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+.partners-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.partners-sub {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+.delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border: 1px solid var(--border);
+  text-align: left;
+  margin-bottom: 4rem;
+}
+.delivery-card {
+  padding: 2rem;
+  background: var(--slate);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.delivery-card:hover {
+  background: var(--surface);
+}
+.delivery-card .d-icon {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--magma);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.delivery-card h4 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0.6rem;
+}
+.delivery-card p {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ── CONTACT ── */
+#contact {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+.contact-left { flex: 1; }
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.contact-text {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+.contact-cta {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  padding: 1rem 2.5rem;
+  background: var(--magma);
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.contact-cta:hover {
+  background: var(--magma-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(209,74,31,0.3);
+}
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.contact-info-item {
+  padding: 1.2rem 1.8rem;
+  border: 1px solid var(--border);
+  background: var(--slate);
+}
+.contact-info-item .ci-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+}
+.contact-info-item .ci-value {
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+.contact-info-item a {
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: border-color 0.3s;
+}
+.contact-info-item a:hover { border-color: var(--magma); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+.footer-right {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── SEPARATOR ── */
+.section-sep {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+}
+.section-sep hr {
+  border: none;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 1.5rem; }
+  #thesis { flex-direction: column; gap: 3rem; }
+  .engine-grid { grid-template-columns: 1fr; }
+  .pipeline-visual { flex-direction: column; }
+  .pipe-stage { border-right: none; border-bottom: 1px solid var(--border); }
+  .pipe-stage::after { display: none; }
+  .gaas-compare { grid-template-columns: 1fr; }
+  .delivery-grid { grid-template-columns: 1fr 1fr; }
+  .hero-metric-row { flex-wrap: wrap; gap: 2rem; }
+  #contact { flex-direction: column; text-align: center; }
+  .contact-text { margin: 0 auto 2rem; }
+}
+@media (max-width: 600px) {
+  .delivery-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HYPERFINT<span>.</span>LABS</div>
+  <div class="nav-links">
+    <a href="#thesis">Thesis</a>
+    <a href="#engine">Engine</a>
+    <a href="#gaas">GaaS</a>
+    <a href="#partners">Partners</a>
+  </div>
+  <a href="#contact" class="nav-contact">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">Hyper Field Intelligence Labs</div>
+    <h1 class="hero-title">We do not predict.<br>We <em>compute</em> the state<br>of reality.</h1>
+    <p class="hero-sub">The world's only AI-integrated pure physics engine.<br>Delivering Level 2 Topological Data that no one else can produce.</p>
+    <div class="hero-metric-row">
+      <div class="hero-metric">
+        <span class="val">3</span>
+        <span class="label">Verified Domains</span>
+      </div>
+      <div class="hero-metric">
+        <span class="val">0</span>
+        <span class="label">Core Code Changes</span>
+      </div>
+      <div class="hero-metric">
+        <span class="val">0.9971</span>
+        <span class="label">ROC AUC (Seismic)</span>
+      </div>
+      <div class="hero-metric">
+        <span class="val">139×</span>
+        <span class="label">Probability Gain vs ETAS</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section id="thesis">
+  <div class="thesis-left reveal">
+    <div class="section-label">01 — Thesis</div>
+    <h2 class="thesis-heading">AI learned every fluid dynamics equation ever written. It still drowns.</h2>
+    <p class="thesis-text">Current AI systems have consumed the world's text, images, and video — all surface-level observations captured through human-designed instruments. Yet 76% of AI researchers warn that scaling alone cannot reach AGI.</p>
+    <p class="thesis-text">The missing piece is not more data. It is <strong style="color:var(--text-primary)">physical grounding</strong> — the capacity to compute the internal topological state of reality that no camera, no sensor, and no language model has ever accessed.</p>
+    <p class="thesis-text">HYPERFINT LABS builds the physics layer that gives AI this capacity.</p>
+  </div>
+  <div class="thesis-right reveal">
+    <div class="data-layer-stack">
+      <div class="data-layer l2">
+        <div class="layer-header">
+          <span class="layer-tag owned">L2 — Topological Data</span>
+          <span class="layer-owner hf">HYPERFINT LABS Only</span>
+        </div>
+        <div class="layer-desc">Spacetime curvature (g₀₀), intrinsic time (τ), tunneling probability, phase transition thresholds — computed from physics laws, not extracted from observations.</div>
+        <div class="layer-examples">OUTPUT → g₀₀, BHS score, CRITICAL / ELEVATED state</div>
+      </div>
+      <div class="data-layer">
+        <div class="layer-header">
+          <span class="layer-tag">L1 — Observational Data</span>
+          <span class="layer-owner bigtech">Big Tech Saturated</span>
+        </div>
+        <div class="layer-desc">Text, images, video, sensor readings — surface phenomena captured through optical and linguistic instruments.</div>
+        <div class="layer-examples">Text corpus, CCTV, satellite imagery, market tickers</div>
+      </div>
+      <div class="data-layer">
+        <div class="layer-header">
+          <span class="layer-tag">L0 — Raw Physical Reality</span>
+        </div>
+        <div class="layer-desc">The unobserved state of nature itself. Tectonic stress 10km deep. Capital flow topology before collapse. The territory, not the map.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGINE -->
+<section id="engine">
+  <div class="reveal">
+    <div class="section-label">02 — The HYPER-PRISM Engine</div>
+    <h2 class="thesis-heading" style="max-width:750px;">One engine. Zero code changes.<br>Every domain computable.</h2>
+    <p class="thesis-text" style="max-width:650px;margin-bottom:0;">The engine computes Level 2 Topological Data — spacetime curvature, intrinsic time, tunneling probability — as domain-invariant physical quantities. Only the input adapter changes between domains.</p>
+  </div>
+
+  <div class="engine-grid reveal">
+    <div class="engine-cell">
+      <div class="domain-label">MARS 3 — Financial Markets</div>
+      <h3>Capital Phase Transitions</h3>
+      <p>Computes the thermodynamic topology of capital flow. Diagnoses market state through spacetime curvature — not price prediction, but reality-state computation.</p>
+      <div class="engine-stat">
+        <span class="num">g<sub style="font-size:0.6em">c</sub> ≈ 1.20</span>
+        <span class="unit">Critical threshold</span>
+      </div>
+    </div>
+    <div class="engine-cell">
+      <div class="domain-label">MARS 4 — Seismic Dynamics</div>
+      <h3>Tectonic Stress Accumulation</h3>
+      <p>Computes subsurface stress topology across fault systems. 14 events verified across 6 countries (M5.5–M9.0), where the statistical baseline achieves 0% recall on M≥6.</p>
+      <div class="engine-stat">
+        <span class="num">14/14</span>
+        <span class="unit">Events · 6 countries</span>
+      </div>
+    </div>
+    <div class="engine-cell">
+      <div class="domain-label">MARS 7 — Yang-Mills / Quantum</div>
+      <h3>Gauge-Information Identity</h3>
+      <p>The BHS score computed each cycle is mathematically identical to the Yang-Mills Lagrangian density — proven on finite lattice. The engine's physics is not metaphorical. It is literal.</p>
+      <div class="engine-stat">
+        <span class="num">Thm 3.5</span>
+        <span class="unit">Unconditional proof</span>
+      </div>
+    </div>
+    <div class="engine-cell">
+      <div class="domain-label">MARS 5 — ICU Biodynamics</div>
+      <h3>Hemodynamic Cascading Failure</h3>
+      <p>Treats the human body as a coupled multi-physics system. Computes cascading failure thresholds across cardiovascular, respiratory, and metabolic subsystems.</p>
+      <div class="engine-stat">
+        <span class="num" style="color:var(--text-dim);font-size:1.2rem;">Verification Pending</span>
+        <span class="unit">Data acquisition phase</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="engine-note reveal">
+    <p><strong>g<sub>c</sub> ≈ 1.20</strong> (finance) and <strong>g<sub>c</sub> ≈ 1.25</strong> (seismic) — critical thresholds discovered independently in different domains with zero shared code. The universality of these values is the proof.</p>
+  </div>
+</section>
+
+<!-- GAAS -->
+<section id="gaas">
+  <div class="reveal">
+    <div class="section-label">03 — Grounding-as-a-Service</div>
+    <div class="gaas-statement">RAG gives AI a textbook about swimming. GaaS gives AI <em>the physics of buoyancy itself.</em></div>
+  </div>
+
+  <div class="pipeline-visual reveal">
+    <div class="pipe-stage">
+      <div class="pipe-num">Stage 01</div>
+      <div class="pipe-title">Ingest</div>
+      <div class="pipe-desc">Raw domain signals enter the HYPER-PRISM Engine — market microstructure, seismic waveforms, biosignals, grid telemetry.</div>
+      <div class="pipe-output">L0 → Engine</div>
+    </div>
+    <div class="pipe-stage">
+      <div class="pipe-num">Stage 02</div>
+      <div class="pipe-title">Compute</div>
+      <div class="pipe-desc">Physics-law computation produces L2 Topological Data: g₀₀, τ, tunneling probability, BHS scores, phase state classification.</div>
+      <div class="pipe-output">Engine → L2 Data</div>
+    </div>
+    <div class="pipe-stage">
+      <div class="pipe-num">Stage 03</div>
+      <div class="pipe-title">Ground</div>
+      <div class="pipe-desc">L2 data streams into LLM context via MCP / API. The model reasons on physical reality — not probabilistic word patterns.</div>
+      <div class="pipe-output">L2 → LLM Context</div>
+    </div>
+  </div>
+
+  <div class="gaas-compare reveal">
+    <div class="compare-col">
+      <div class="compare-label">Standard RAG</div>
+      <div class="compare-item"><span class="compare-icon">—</span> Retrieves text from document databases</div>
+      <div class="compare-item"><span class="compare-icon">—</span> L1 observational data only</div>
+      <div class="compare-item"><span class="compare-icon">—</span> Deterministic guardrails on a dynamical system</div>
+      <div class="compare-item"><span class="compare-icon">—</span> Cannot detect physics-level critical states</div>
+    </div>
+    <div class="compare-col enhanced">
+      <div class="compare-label">GaaS via HYPER-PRISM</div>
+      <div class="compare-item"><span class="compare-icon">◆</span> Computes physical state from first principles</div>
+      <div class="compare-item"><span class="compare-icon">◆</span> L2 topological data — previously nonexistent</div>
+      <div class="compare-item"><span class="compare-icon">◆</span> Identifies singularities in system dynamics</div>
+      <div class="compare-item"><span class="compare-icon">◆</span> Provides physical cognition, not text retrieval</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners">
+  <div class="reveal">
+    <div class="section-label" style="text-align:center;">04 — Delivery</div>
+    <h2 class="partners-heading">The Physics Layer for AGI</h2>
+    <p class="partners-sub">We supply the grounding data that LLM companies and World Model builders cannot produce internally. Four delivery channels, one engine.</p>
+  </div>
+  <div class="delivery-grid reveal">
+    <div class="delivery-card">
+      <div class="d-icon">MCP</div>
+      <h4>Anthropic Path</h4>
+      <p>Native Model Context Protocol integration. L2 data streams directly into Claude's context window.</p>
+    </div>
+    <div class="delivery-card">
+      <div class="d-icon">API</div>
+      <h4>REST / Function Calling</h4>
+      <p>OpenAI-compatible function calling wrapper. Standard JSON schema for any LLM provider.</p>
+    </div>
+    <div class="delivery-card">
+      <div class="d-icon">SaaS</div>
+      <h4>PRISM Mirror Dashboard</h4>
+      <p>Real-time monitoring of L2 topological state across subscribed domains. Enterprise web interface.</p>
+    </div>
+    <div class="delivery-card">
+      <div class="d-icon">License</div>
+      <h4>Tier 1 On-Premise</h4>
+      <p>Full engine deployment behind your firewall. HSM+TEE source protection. For sovereign AI programs.</p>
+    </div>
+  </div>
+  <div class="reveal" style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:1rem;">
+    <div style="text-align:center;">
+      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">23+</div>
+      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Patents Filed</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">118+</div>
+      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Claims</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">2 Axes</div>
+      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Orthogonal Protection</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-left reveal">
+    <div class="section-label">05 — Contact</div>
+    <h2 class="contact-heading">Build on the<br>physics layer.</h2>
+    <p class="contact-text">For partnership inquiries, research collaboration, and enterprise licensing. We supply the data your models need to be grounded in physical reality.</p>
+    <a href="mailto:phillip@hyperfint-labs.com" class="contact-cta">Get in Touch →</a>
+  </div>
+  <div class="contact-right reveal">
+    <div class="contact-info-item">
+      <div class="ci-label">Headquarters</div>
+      <div class="ci-value">Seoul, Republic of Korea</div>
+    </div>
+    <div class="contact-info-item">
+      <div class="ci-label">Focus Areas</div>
+      <div class="ci-value">LLM Grounding · AI Safety · World Models</div>
+    </div>
+    <div class="contact-info-item">
+      <div class="ci-label">Delivery</div>
+      <div class="ci-value">MCP · API · SaaS · On-Premise License</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">© 2026 HYPERFINT LABS. All rights reserved.</div>
+  <div class="footer-right">Computed Reality, Unwavering Intelligence.</div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+reveals.forEach(el => observer.observe(el));
+
+// Hero canvas - minimal particle field
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let w, h, particles = [];
+
+function resize() {
+  w = canvas.width = canvas.offsetWidth;
+  h = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const N = Math.min(120, Math.floor(window.innerWidth / 12));
+for (let i = 0; i < N; i++) {
+  particles.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 1.5 + 0.5
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+    if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(209,74,31,0.4)';
+    ctx.fill();
+    // connections
+    for (let j = i + 1; j < particles.length; j++) {
+      const q = particles[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle = `rgba(15,106,139,${0.12 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
