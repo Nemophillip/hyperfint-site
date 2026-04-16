@@ -6,1000 +6,421 @@
 <title>HYPERFINT LABS — The Physics Layer for AGI</title>
 <meta name="description" content="Grounding-as-a-Service through Level 2 Geometric State Data. We do not predict. We compute the state of reality.">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap');
-
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --obsidian: #08090C;
-  --slate: #12141A;
-  --surface: #1A1C24;
-  --border: #2A2D38;
-  --text-primary: #E8E6E1;
-  --text-secondary: #8A8B91;
-  --text-dim: #5A5B63;
-  --magma: #D14A1F;
-  --magma-glow: #FF6B3D;
-  --teal: #0F6A8B;
-  --teal-light: #1A9EC2;
-  --gold: #C49A3C;
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--obsidian);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-weight: 300;
-  line-height: 1.7;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 3rem;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(8,9,12,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(42,45,56,0.4);
-}
-.nav-logo {
-  font-family: var(--font-mono);
-  font-weight: 500; font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  color: var(--text-primary);
-}
-.nav-logo span { color: var(--magma); }
-.nav-links { display: flex; gap: 2.5rem; }
-.nav-links a {
-  font-size: 0.78rem; letter-spacing: 0.08em;
-  color: var(--text-secondary);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: color 0.3s;
-}
-.nav-links a:hover { color: var(--text-primary); }
-.nav-contact {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.6rem 1.4rem;
-  border: 1px solid var(--magma);
-  color: var(--magma);
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  transition: all 0.3s;
-}
-.nav-contact:hover {
-  background: var(--magma);
-  color: var(--obsidian);
-}
-
-/* ── SECTIONS ── */
-section {
-  min-height: 100vh;
-  padding: 8rem 3rem;
-  position: relative;
-}
-
-/* ── HERO ── */
-#hero {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
-  padding-top: 6rem;
-  position: relative;
-  overflow: hidden;
-}
-#hero-canvas {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  opacity: 0.35;
-}
-.hero-content { position: relative; z-index: 2; max-width: 900px; }
-.hero-badge {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--magma);
-  border: 1px solid rgba(209,74,31,0.3);
-  padding: 0.5rem 1.2rem;
-  margin-bottom: 2.5rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.3s forwards;
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 6vw, 5.5rem);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.5s forwards;
-}
-.hero-title em {
-  font-style: italic;
-  color: var(--magma-glow);
-}
-.hero-sub {
-  font-size: 1.15rem;
-  color: var(--text-secondary);
-  max-width: 640px;
-  margin: 0 auto 3rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.7s forwards;
-}
-.hero-metric-row {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.9s forwards;
-}
-.hero-metric {
-  text-align: center;
-}
-.hero-metric .val {
-  font-family: var(--font-mono);
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  display: block;
-}
-.hero-metric .label {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-top: 0.3rem;
-}
-.hero-scroll-hint {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 1.2s forwards;
-}
-.hero-scroll-hint span {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, var(--text-dim), transparent);
-  animation: scrollPulse 2s infinite;
-}
-
-/* ── THESIS ── */
-#thesis {
-  display: flex;
-  align-items: center;
-  gap: 6rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.thesis-left { flex: 1; }
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--magma);
-  margin-bottom: 1.5rem;
-}
-.thesis-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 1.8rem;
-}
-.thesis-text {
-  color: var(--text-secondary);
-  font-size: 1.02rem;
-  margin-bottom: 1.2rem;
-}
-.thesis-right {
-  flex: 1;
-  position: relative;
-}
-.data-layer-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.data-layer {
-  padding: 1.8rem 2rem;
-  border: 1px solid var(--border);
-  background: var(--slate);
-  transition: all 0.4s;
-  cursor: default;
-}
-.data-layer:hover {
-  border-color: var(--magma);
-  background: rgba(209,74,31,0.05);
-  transform: translateX(8px);
-}
-.data-layer.l2:hover {
-  border-color: var(--teal-light);
-  background: rgba(15,106,139,0.08);
-  box-shadow: 0 0 40px rgba(15,106,139,0.1);
-}
-.layer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.6rem;
-}
-.layer-tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-}
-.layer-tag.owned {
-  color: var(--teal-light);
-}
-.layer-owner {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid;
-}
-.layer-owner.bigtech {
-  color: var(--text-dim);
-  border-color: var(--text-dim);
-}
-.layer-owner.hf {
-  color: var(--teal-light);
-  border-color: var(--teal);
-}
-.layer-desc {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-}
-.layer-examples {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  margin-top: 0.5rem;
-}
-
-/* ── ENGINE ── */
-#engine {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.engine-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  margin-top: 3rem;
-  border: 1px solid var(--border);
-}
-.engine-cell {
-  padding: 2.5rem;
-  background: var(--slate);
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s;
-}
-.engine-cell:hover {
-  background: var(--surface);
-}
-.engine-cell::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 0;
-  background: var(--magma);
-  transition: height 0.4s;
-}
-.engine-cell:hover::before { height: 100%; }
-.engine-cell .domain-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 0.8rem;
-}
-.engine-cell h3 {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
-}
-.engine-cell p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.2rem;
-}
-.engine-stat {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin-top: auto;
-}
-.engine-stat .num {
-  font-family: var(--font-mono);
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: var(--teal-light);
-}
-.engine-stat .unit {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.engine-note {
-  margin-top: 2rem;
-  padding: 1.5rem 2rem;
-  border-left: 2px solid var(--magma);
-  background: rgba(209,74,31,0.04);
-}
-.engine-note p {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-.engine-note strong {
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-/* ── GAAS ── */
-#gaas {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.gaas-statement {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 400;
-  line-height: 1.35;
-  max-width: 800px;
-  margin-bottom: 4rem;
-}
-.gaas-statement em {
-  font-style: italic;
-  color: var(--teal-light);
-}
-.pipeline-visual {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  margin-bottom: 3rem;
-  border: 1px solid var(--border);
-}
-.pipe-stage {
-  flex: 1;
-  padding: 2.5rem 2rem;
-  border-right: 1px solid var(--border);
-  position: relative;
-}
-.pipe-stage:last-child { border-right: none; }
-.pipe-stage::after {
-  content: '→';
-  position: absolute;
-  right: -0.7rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  color: var(--text-dim);
-  z-index: 2;
-}
-.pipe-stage:last-child::after { display: none; }
-.pipe-num {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-}
-.pipe-title {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  margin-bottom: 0.8rem;
-}
-.pipe-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-}
-.pipe-output {
-  margin-top: 1rem;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--teal-light);
-  padding: 0.4rem 0.8rem;
-  background: rgba(15,106,139,0.1);
-  border: 1px solid rgba(15,106,139,0.2);
-  display: inline-block;
-}
-
-.gaas-compare {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  border: 1px solid var(--border);
-}
-.compare-col {
-  padding: 2.5rem;
-  background: var(--slate);
-}
-.compare-col.enhanced {
-  background: rgba(15,106,139,0.05);
-  border-left: 2px solid var(--teal);
-}
-.compare-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-.compare-col:first-child .compare-label { color: var(--text-dim); }
-.compare-col.enhanced .compare-label { color: var(--teal-light); }
-.compare-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-}
-.compare-icon {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  margin-top: 0.15rem;
-  flex-shrink: 0;
-}
-.compare-col:first-child .compare-icon { color: var(--text-dim); }
-.compare-col.enhanced .compare-icon { color: var(--teal-light); }
-
-/* ── PARTNERS ── */
-#partners {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-.partners-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 400;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-}
-.partners-sub {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  max-width: 700px;
-  margin: 0 auto 4rem;
-}
-.delivery-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  border: 1px solid var(--border);
-  text-align: left;
-  margin-bottom: 4rem;
-}
-.delivery-card {
-  padding: 2rem;
-  background: var(--slate);
-  border: 1px solid var(--border);
-  transition: all 0.3s;
-}
-.delivery-card:hover {
-  background: var(--surface);
-}
-.delivery-card .d-icon {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  color: var(--magma);
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-.delivery-card h4 {
-  font-size: 1rem;
-  font-weight: 400;
-  margin-bottom: 0.6rem;
-}
-.delivery-card p {
-  font-size: 0.82rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
-
-/* ── CONTACT ── */
-#contact {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4rem;
-}
-.contact-left { flex: 1; }
-.contact-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.5rem);
-  font-weight: 400;
-  line-height: 1.15;
-  margin-bottom: 1.5rem;
-}
-.contact-text {
-  color: var(--text-secondary);
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  max-width: 500px;
-}
-.contact-cta {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.1em;
-  padding: 1rem 2.5rem;
-  background: var(--magma);
-  color: #fff;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-.contact-cta:hover {
-  background: var(--magma-glow);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(209,74,31,0.3);
-}
-.contact-right {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-.contact-info-item {
-  padding: 1.2rem 1.8rem;
-  border: 1px solid var(--border);
-  background: var(--slate);
-}
-.contact-info-item .ci-label {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 0.4rem;
-}
-.contact-info-item .ci-value {
-  font-size: 0.92rem;
-  color: var(--text-primary);
-}
-.contact-info-item a {
-  color: var(--text-primary);
-  text-decoration: none;
-  border-bottom: 1px solid var(--border);
-  transition: border-color 0.3s;
-}
-.contact-info-item a:hover { border-color: var(--magma); }
-
-/* ── FOOTER ── */
-footer {
-  padding: 3rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.footer-left {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--text-dim);
-}
-.footer-right {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-dim);
-  letter-spacing: 0.08em;
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── SEPARATOR ── */
-.section-sep {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 3rem;
-}
-.section-sep hr {
-  border: none;
-  height: 1px;
-  background: var(--border);
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  section { padding: 5rem 1.5rem; }
-  #thesis { flex-direction: column; gap: 3rem; }
-  .engine-grid { grid-template-columns: 1fr; }
-  .pipeline-visual { flex-direction: column; }
-  .pipe-stage { border-right: none; border-bottom: 1px solid var(--border); }
-  .pipe-stage::after { display: none; }
-  .gaas-compare { grid-template-columns: 1fr; }
-  .delivery-grid { grid-template-columns: 1fr 1fr; }
-  .hero-metric-row { flex-wrap: wrap; gap: 2rem; }
-  #contact { flex-direction: column; text-align: center; }
-  .contact-text { margin: 0 auto 2rem; }
-}
-@media (max-width: 600px) {
-  .delivery-grid { grid-template-columns: 1fr; }
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--obsidian:#08090C;--slate:#12141A;--surface:#1A1C24;--border:#2A2D38;--text-primary:#E8E6E1;--text-secondary:#8A8B91;--text-dim:#5A5B63;--magma:#D14A1F;--magma-glow:#FF6B3D;--teal:#0F6A8B;--teal-light:#1A9EC2;--gold:#C49A3C;--font-display:'Instrument Serif',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;--font-mono:'JetBrains Mono',monospace}
+html[lang="ko"]{--font-body:'Noto Sans KR','DM Sans',sans-serif}
+html[lang="ja"]{--font-body:'Noto Sans JP','DM Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{background:var(--obsidian);color:var(--text-primary);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.lang-switch{display:flex;gap:2px;align-items:center;margin-left:1.5rem}
+.lang-switch button{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:var(--font-mono);font-size:.65rem;letter-spacing:.08em;padding:.35rem .6rem;cursor:pointer;transition:all .3s}
+.lang-switch button:first-child{border-radius:3px 0 0 3px}
+.lang-switch button:last-child{border-radius:0 3px 3px 0}
+.lang-switch button.active{background:var(--magma);border-color:var(--magma);color:#fff}
+.lang-switch button:hover:not(.active){border-color:var(--text-secondary);color:var(--text-secondary)}
+[data-lang]{display:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(8,9,12,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(42,45,56,.4)}
+.nav-logo{font-family:var(--font-mono);font-weight:500;font-size:.85rem;letter-spacing:.15em;color:var(--text-primary)}
+.nav-logo span{color:var(--magma)}
+.nav-right{display:flex;align-items:center}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{font-size:.78rem;letter-spacing:.08em;color:var(--text-secondary);text-decoration:none;text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-contact{font-family:var(--font-mono);font-size:.75rem;padding:.6rem 1.4rem;border:1px solid var(--magma);color:var(--magma);text-decoration:none;letter-spacing:.1em;transition:all .3s;margin-left:2.5rem}
+.nav-contact:hover{background:var(--magma);color:var(--obsidian)}
+section{min-height:100vh;padding:8rem 3rem;position:relative}
+#hero{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:100vh;padding-top:6rem;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.35}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badge{display:inline-block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magma);border:1px solid rgba(209,74,31,.3);padding:.5rem 1.2rem;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-title em{font-style:italic;color:var(--magma-glow)}
+.hero-sub{font-size:1.15rem;color:var(--text-secondary);max-width:640px;margin:0 auto 3rem;opacity:0;animation:fadeUp .8s .7s forwards}
+.hero-metric-row{display:flex;justify-content:center;gap:3rem;opacity:0;animation:fadeUp .8s .9s forwards}
+.hero-metric{text-align:center}
+.hero-metric .val{font-family:var(--font-mono);font-size:1.8rem;font-weight:500;color:var(--text-primary);display:block}
+.hero-metric .label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-top:.3rem}
+.hero-scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeUp .8s 1.2s forwards}
+.hero-scroll-hint span{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--text-dim),transparent);animation:scrollPulse 2s infinite}
+#thesis{display:flex;align-items:center;gap:6rem;max-width:1200px;margin:0 auto}
+.thesis-left{flex:1}
+.section-label{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magma);margin-bottom:1.5rem}
+.thesis-heading{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:1.8rem}
+html[lang="ko"] .thesis-heading,html[lang="ja"] .thesis-heading,html[lang="ko"] .hero-title,html[lang="ja"] .hero-title,html[lang="ko"] .gaas-statement,html[lang="ja"] .gaas-statement,html[lang="ko"] .partners-heading,html[lang="ja"] .partners-heading,html[lang="ko"] .contact-heading,html[lang="ja"] .contact-heading{font-family:var(--font-body);font-weight:700}
+html[lang="ko"] .thesis-heading,html[lang="ja"] .thesis-heading{font-size:clamp(1.6rem,3vw,2.4rem)}
+html[lang="ko"] .hero-title,html[lang="ja"] .hero-title{font-size:clamp(2.2rem,5vw,4rem)}
+html[lang="ko"] .pipe-title,html[lang="ja"] .pipe-title,html[lang="ko"] .engine-cell h3,html[lang="ja"] .engine-cell h3{font-family:var(--font-body);font-weight:500}
+.thesis-text{color:var(--text-secondary);font-size:1.02rem;margin-bottom:1.2rem}
+.thesis-right{flex:1;position:relative}
+.data-layer-stack{display:flex;flex-direction:column;gap:1px}
+.data-layer{padding:1.8rem 2rem;border:1px solid var(--border);background:var(--slate);transition:all .4s;cursor:default}
+.data-layer:hover{border-color:var(--magma);background:rgba(209,74,31,.05);transform:translateX(8px)}
+.data-layer.l2:hover{border-color:var(--teal-light);background:rgba(15,106,139,.08);box-shadow:0 0 40px rgba(15,106,139,.1)}
+.layer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.layer-tag{font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.1em}
+.layer-tag.owned{color:var(--teal-light)}
+.layer-owner{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid}
+.layer-owner.bigtech{color:var(--text-dim);border-color:var(--text-dim)}
+.layer-owner.hf{color:var(--teal-light);border-color:var(--teal)}
+.layer-desc{font-size:.88rem;color:var(--text-secondary)}
+.layer-examples{font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);margin-top:.5rem}
+#engine{max-width:1200px;margin:0 auto}
+.engine-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:3rem;border:1px solid var(--border)}
+.engine-cell{padding:2.5rem;background:var(--slate);border:1px solid var(--border);position:relative;overflow:hidden;transition:all .4s}
+.engine-cell:hover{background:var(--surface)}
+.engine-cell::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--magma);transition:height .4s}
+.engine-cell:hover::before{height:100%}
+.engine-cell .domain-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.8rem}
+.engine-cell h3{font-family:var(--font-display);font-size:1.5rem;font-weight:400;margin-bottom:1rem}
+.engine-cell p{font-size:.9rem;color:var(--text-secondary);margin-bottom:1.2rem}
+.engine-stat{display:flex;align-items:baseline;gap:.6rem;margin-top:auto}
+.engine-stat .num{font-family:var(--font-mono);font-size:1.6rem;font-weight:500;color:var(--teal-light)}
+.engine-stat .unit{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase}
+.engine-note{margin-top:2rem;padding:1.5rem 2rem;border-left:2px solid var(--magma);background:rgba(209,74,31,.04)}
+.engine-note p{font-family:var(--font-mono);font-size:.82rem;color:var(--text-secondary);line-height:1.8}
+.engine-note strong{color:var(--text-primary);font-weight:500}
+#gaas{max-width:1200px;margin:0 auto}
+.gaas-statement{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:400;line-height:1.35;max-width:800px;margin-bottom:4rem}
+.gaas-statement em{font-style:italic;color:var(--teal-light)}
+.pipeline-visual{display:flex;align-items:stretch;gap:0;margin-bottom:3rem;border:1px solid var(--border)}
+.pipe-stage{flex:1;padding:2.5rem 2rem;border-right:1px solid var(--border);position:relative}
+.pipe-stage:last-child{border-right:none}
+.pipe-stage::after{content:'→';position:absolute;right:-.7rem;top:50%;transform:translateY(-50%);font-size:1.2rem;color:var(--text-dim);z-index:2}
+.pipe-stage:last-child::after{display:none}
+.pipe-num{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;color:var(--text-dim);margin-bottom:1rem}
+.pipe-title{font-family:var(--font-display);font-size:1.3rem;margin-bottom:.8rem}
+.pipe-desc{font-size:.85rem;color:var(--text-secondary)}
+.pipe-output{margin-top:1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--teal-light);padding:.4rem .8rem;background:rgba(15,106,139,.1);border:1px solid rgba(15,106,139,.2);display:inline-block}
+.gaas-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid var(--border)}
+.compare-col{padding:2.5rem;background:var(--slate)}
+.compare-col.enhanced{background:rgba(15,106,139,.05);border-left:2px solid var(--teal)}
+.compare-label{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem}
+.compare-col:first-child .compare-label{color:var(--text-dim)}
+.compare-col.enhanced .compare-label{color:var(--teal-light)}
+.compare-item{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:1rem;font-size:.88rem;color:var(--text-secondary)}
+.compare-icon{font-family:var(--font-mono);font-size:.75rem;margin-top:.15rem;flex-shrink:0}
+.compare-col:first-child .compare-icon{color:var(--text-dim)}
+.compare-col.enhanced .compare-icon{color:var(--teal-light)}
+#partners{max-width:1200px;margin:0 auto;text-align:center}
+.partners-heading{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:1.5rem}
+.partners-sub{font-size:1.05rem;color:var(--text-secondary);max-width:700px;margin:0 auto 4rem}
+.delivery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;border:1px solid var(--border);text-align:left;margin-bottom:4rem}
+.delivery-card{padding:2rem;background:var(--slate);border:1px solid var(--border);transition:all .3s}
+.delivery-card:hover{background:var(--surface)}
+.delivery-card .d-icon{font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--magma);text-transform:uppercase;margin-bottom:1rem}
+.delivery-card h4{font-size:1rem;font-weight:400;margin-bottom:.6rem}
+.delivery-card p{font-size:.82rem;color:var(--text-dim);line-height:1.6}
+#contact{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:4rem}
+.contact-left{flex:1}
+.contact-heading{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.5rem);font-weight:400;line-height:1.15;margin-bottom:1.5rem}
+.contact-text{color:var(--text-secondary);font-size:1rem;margin-bottom:2rem;max-width:500px}
+.contact-cta{display:inline-block;font-family:var(--font-mono);font-size:.82rem;letter-spacing:.1em;padding:1rem 2.5rem;background:var(--magma);color:#fff;text-decoration:none;transition:all .3s}
+.contact-cta:hover{background:var(--magma-glow);transform:translateY(-2px);box-shadow:0 8px 30px rgba(209,74,31,.3)}
+.contact-right{display:flex;flex-direction:column;gap:1.5rem}
+.contact-info-item{padding:1.2rem 1.8rem;border:1px solid var(--border);background:var(--slate)}
+.contact-info-item .ci-label{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.4rem}
+.contact-info-item .ci-value{font-size:.92rem;color:var(--text-primary)}
+footer{padding:3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-left{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;color:var(--text-dim)}
+.footer-right{font-family:var(--font-mono);font-size:.68rem;color:var(--text-dim);letter-spacing:.08em}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:.8}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){nav{padding:1rem 1.5rem}.nav-links{display:none}section{padding:5rem 1.5rem}#thesis{flex-direction:column;gap:3rem}.engine-grid{grid-template-columns:1fr}.pipeline-visual{flex-direction:column}.pipe-stage{border-right:none;border-bottom:1px solid var(--border)}.pipe-stage::after{display:none}.gaas-compare{grid-template-columns:1fr}.delivery-grid{grid-template-columns:1fr 1fr}.hero-metric-row{flex-wrap:wrap;gap:2rem}#contact{flex-direction:column;text-align:center}.contact-text{margin:0 auto 2rem}}
+@media(max-width:600px){.delivery-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">HYPERFINT<span>.</span>LABS</div>
-  <div class="nav-links">
-    <a href="#thesis">Thesis</a>
-    <a href="#engine">Engine</a>
-    <a href="#gaas">GaaS</a>
-    <a href="#partners">Partners</a>
-  </div>
-  <a href="#contact" class="nav-contact">Contact</a>
+<div class="nav-logo">HYPERFINT<span>.</span>LABS</div>
+<div class="nav-right">
+<div class="nav-links"><a href="#thesis">Thesis</a><a href="#engine">Engine</a><a href="#gaas">GaaS</a><a href="#partners">Partners</a></div>
+<a href="#contact" class="nav-contact">Contact</a>
+<div class="lang-switch">
+<button class="active" onclick="setLang('en')">EN</button>
+<button onclick="setLang('ko')">KR</button>
+<button onclick="setLang('ja')">JP</button>
+</div>
+</div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-content">
-    <div class="hero-badge">Hyper Field Intelligence Labs</div>
-    <h1 class="hero-title">We do not predict.<br>We <em>compute</em> the state<br>of reality.</h1>
-    <p class="hero-sub">The world's only AI-integrated pure physics engine.<br>Delivering Level 2 Geometric State Data that no one else can produce.</p>
-    <div class="hero-metric-row">
-      <div class="hero-metric">
-        <span class="val">3</span>
-        <span class="label">Verified Domains</span>
-      </div>
-      <div class="hero-metric">
-        <span class="val">0</span>
-        <span class="label">Core Code Changes</span>
-      </div>
-      <div class="hero-metric">
-        <span class="val">0.9971</span>
-        <span class="label">ROC AUC (Seismic)</span>
-      </div>
-      <div class="hero-metric">
-        <span class="val">139×</span>
-        <span class="label">Probability Gain vs ETAS</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero-scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
-  </div>
+<canvas id="hero-canvas"></canvas>
+<div class="hero-content">
+<div class="hero-badge">Hyper Field Intelligence Labs</div>
+<h1 class="hero-title" data-lang="en">We do not predict.<br>We <em>compute</em> the state<br>of reality.</h1>
+<h1 class="hero-title" data-lang="ko">우리는 예측하지 않습니다.<br>현실의 상태를<br><span style="color:var(--magma-glow)">연산</span>합니다.</h1>
+<h1 class="hero-title" data-lang="ja">我々は予測しません。<br>現実の状態を<br><span style="color:var(--magma-glow)">演算</span>します。</h1>
+<p class="hero-sub" data-lang="en">The world's only AI-integrated pure physics engine.<br>Delivering Level 2 Geometric State Data that no one else can produce.</p>
+<p class="hero-sub" data-lang="ko">세계 유일의 AI 연동형 순수 물리 엔진.<br>그 누구도 생산할 수 없는 Level 2 기하학적 상태 데이터를 공급합니다.</p>
+<p class="hero-sub" data-lang="ja">世界唯一のAI統合型純粋物理エンジン。<br>他の誰にも生成できないLevel 2 幾何学的状態データを提供します。</p>
+<div class="hero-metric-row">
+<div class="hero-metric"><span class="val">3</span><span class="label" data-lang="en">Verified Domains</span><span class="label" data-lang="ko">검증 도메인</span><span class="label" data-lang="ja">検証済ドメイン</span></div>
+<div class="hero-metric"><span class="val">0</span><span class="label" data-lang="en">Core Code Changes</span><span class="label" data-lang="ko">코어 코드 변경</span><span class="label" data-lang="ja">コアコード変更</span></div>
+<div class="hero-metric"><span class="val">0.9971</span><span class="label" data-lang="en">ROC AUC (Seismic)</span><span class="label" data-lang="ko">ROC AUC (지진)</span><span class="label" data-lang="ja">ROC AUC（地震）</span></div>
+<div class="hero-metric"><span class="val">139×</span><span class="label" data-lang="en">Probability Gain vs ETAS</span><span class="label" data-lang="ko">ETAS 대비 확률 이득</span><span class="label" data-lang="ja">ETAS比 確率利得</span></div>
+</div>
+</div>
+<div class="hero-scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- THESIS -->
 <section id="thesis">
-  <div class="thesis-left reveal">
-    <div class="section-label">01 — Thesis</div>
-    <h2 class="thesis-heading">AI learned every fluid dynamics equation ever written. It still sinks.</h2>
-    <p class="thesis-text">Current AI systems have consumed the world's text, images, and video — all surface-level observations captured through human-designed instruments. Yet 76% of AI researchers warn that scaling alone cannot reach AGI.</p>
-    <p class="thesis-text">The missing piece is not more data. It is <strong style="color:var(--text-primary)">physical grounding</strong> — the capacity to compute the internal geometric state of reality that no camera, no sensor, and no language model has ever accessed.</p>
-    <p class="thesis-text">HYPERFINT LABS builds the physics layer that gives AI this capacity.</p>
-  </div>
-  <div class="thesis-right reveal">
-    <div class="data-layer-stack">
-      <div class="data-layer l2">
-        <div class="layer-header">
-          <span class="layer-tag owned">L2 — Geometric State Data</span>
-          <span class="layer-owner hf">HYPERFINT LABS Only</span>
-        </div>
-        <div class="layer-desc">Geometric state scalar (g₀₀), intrinsic time (τ), tunneling probability, phase transition thresholds — computed from physics laws, not extracted from observations.</div>
-        <div class="layer-examples">OUTPUT → g₀₀, BHS score, CRITICAL / ELEVATED state</div>
-      </div>
-      <div class="data-layer">
-        <div class="layer-header">
-          <span class="layer-tag">L1 — Observational Data</span>
-          <span class="layer-owner bigtech">Big Tech Saturated</span>
-        </div>
-        <div class="layer-desc">Text, images, video, sensor readings — surface phenomena captured through optical and linguistic instruments.</div>
-        <div class="layer-examples">Text corpus, CCTV, satellite imagery, market tickers</div>
-      </div>
-      <div class="data-layer">
-        <div class="layer-header">
-          <span class="layer-tag">L0 — Raw Physical Reality</span>
-        </div>
-        <div class="layer-desc">The unobserved state of nature itself. Tectonic stress 10km deep. Capital flow geometry before collapse. The territory, not the map.</div>
-      </div>
-    </div>
-  </div>
+<div class="thesis-left reveal">
+<div class="section-label">01 — Thesis</div>
+<h2 class="thesis-heading" data-lang="en">AI learned every fluid dynamics equation ever written. It still sinks.</h2>
+<h2 class="thesis-heading" data-lang="ko">AI는 모든 유체역학 공식을 학습했지만, 수영을 하면 물속으로 가라앉습니다.</h2>
+<h2 class="thesis-heading" data-lang="ja">AIはあらゆる流体力学の公式を学びましたが、泳げば水中に沈みます。</h2>
+<p class="thesis-text" data-lang="en">Current AI systems have consumed the world's text, images, and video — all surface-level observations captured through human-designed instruments. Yet 76% of AI researchers warn that scaling alone cannot reach AGI.</p>
+<p class="thesis-text" data-lang="ko">현재의 AI 시스템은 세계의 텍스트, 이미지, 영상을 모두 소비했습니다 — 모두 인간이 설계한 도구로 포착한 표면적 관찰에 불과합니다. AI 연구자의 76%는 스케일링만으로 AGI에 도달할 수 없다고 경고합니다.</p>
+<p class="thesis-text" data-lang="ja">現在のAIシステムは世界中のテキスト、画像、映像を消費しました — すべて人間が設計した機器で捉えた表層的な観測です。AI研究者の76%はスケーリングだけではAGIに到達できないと警告しています。</p>
+<p class="thesis-text" data-lang="en">The missing piece is not more data. It is <strong style="color:var(--text-primary)">physical grounding</strong> — the capacity to compute the internal geometric state of reality that no camera, no sensor, and no language model has ever accessed.</p>
+<p class="thesis-text" data-lang="ko">부족한 것은 더 많은 데이터가 아닙니다. <strong style="color:var(--text-primary)">물리적 접지(Physical Grounding)</strong> — 어떤 카메라, 센서, 언어 모델도 접근한 적 없는 현실의 내부 기하학적 상태를 연산하는 능력입니다.</p>
+<p class="thesis-text" data-lang="ja">足りないのはデータの量ではありません。<strong style="color:var(--text-primary)">物理的接地（Physical Grounding）</strong> — いかなるカメラ、センサー、言語モデルもアクセスしたことのない現実の内部幾何学的状態を演算する能力です。</p>
+<p class="thesis-text" data-lang="en">HYPERFINT LABS builds the physics layer that gives AI this capacity.</p>
+<p class="thesis-text" data-lang="ko">HYPERFINT LABS는 AI에 이 능력을 부여하는 물리 계층을 구축합니다.</p>
+<p class="thesis-text" data-lang="ja">HYPERFINT LABSはAIにこの能力を付与する物理レイヤーを構築します。</p>
+</div>
+<div class="thesis-right reveal">
+<div class="data-layer-stack">
+<div class="data-layer l2">
+<div class="layer-header"><span class="layer-tag owned">L2 — Geometric State Data</span><span class="layer-owner hf">HYPERFINT LABS Only</span></div>
+<div class="layer-desc" data-lang="en">Geometric state scalar (g₀₀), intrinsic time (τ), tunneling probability, phase transition thresholds — computed from physics laws, not extracted from observations.</div>
+<div class="layer-desc" data-lang="ko">기하학적 상태 스칼라(g₀₀), 고유 시간(τ), 터널링 확률, 위상 전이 임계점 — 관찰에서 추출한 것이 아닌, 물리 법칙으로부터 연산된 데이터.</div>
+<div class="layer-desc" data-lang="ja">幾何学的状態スカラー（g₀₀）、固有時間（τ）、トンネリング確率、相転移閾値 — 観測からの抽出ではなく、物理法則から演算されたデータ。</div>
+<div class="layer-examples">OUTPUT → g₀₀, BHS score, CRITICAL / ELEVATED state</div>
+</div>
+<div class="data-layer">
+<div class="layer-header"><span class="layer-tag">L1 — Observational Data</span><span class="layer-owner bigtech">Big Tech Saturated</span></div>
+<div class="layer-desc" data-lang="en">Text, images, video, sensor readings — surface phenomena captured through optical and linguistic instruments.</div>
+<div class="layer-desc" data-lang="ko">텍스트, 이미지, 영상, 센서 데이터 — 광학 및 언어 도구를 통해 포착된 표면 현상.</div>
+<div class="layer-desc" data-lang="ja">テキスト、画像、映像、センサーデータ — 光学・言語的手段で捉えた表層現象。</div>
+<div class="layer-examples">Text corpus, CCTV, satellite imagery, market tickers</div>
+</div>
+<div class="data-layer">
+<div class="layer-header"><span class="layer-tag">L0 — Raw Physical Reality</span></div>
+<div class="layer-desc" data-lang="en">The unobserved state of nature itself. Tectonic stress 10km deep. Capital flow geometry before collapse. The territory, not the map.</div>
+<div class="layer-desc" data-lang="ko">관측되지 않은 자연 그 자체의 상태. 지하 10km의 지각 응력. 붕괴 전 자본 흐름의 기하학적 구조. 지도가 아닌 영토 그 자체.</div>
+<div class="layer-desc" data-lang="ja">観測されていない自然そのものの状態。地下10kmの地殻応力。崩壊前の資本フローの幾何学的構造。地図ではなく、領土そのもの。</div>
+</div>
+</div>
+</div>
 </section>
 
-<!-- ENGINE -->
 <section id="engine">
-  <div class="reveal">
-    <div class="section-label">02 — The HYPER-PRISM Engine</div>
-    <h2 class="thesis-heading" style="max-width:750px;">One engine. Zero code changes.<br>Every domain computable.</h2>
-    <p class="thesis-text" style="max-width:650px;margin-bottom:0;">The engine computes Level 2 Geometric State Data — geometric state scalar, intrinsic time, tunneling probability — as domain-invariant physical quantities. Only the input adapter changes between domains.</p>
-  </div>
-
-  <div class="engine-grid reveal">
-    <div class="engine-cell">
-      <div class="domain-label">MARS 3 — Financial Markets</div>
-      <h3>Capital Phase Transitions</h3>
-      <p>Computes the thermodynamic structure of capital flow. Diagnoses market state through geometric state scalar — not price prediction, but reality-state computation.</p>
-      <div class="engine-stat">
-        <span class="num">g<sub style="font-size:0.6em">c</sub> ≈ 1.20</span>
-        <span class="unit">Critical threshold</span>
-      </div>
-    </div>
-    <div class="engine-cell">
-      <div class="domain-label">MARS 4 — Seismic Dynamics</div>
-      <h3>Tectonic Stress Accumulation</h3>
-      <p>Computes subsurface stress structure across fault systems. 14 events verified across 6 countries (M5.5–M9.0), where the statistical baseline achieves 0% recall on M≥6.</p>
-      <div class="engine-stat">
-        <span class="num">14/14</span>
-        <span class="unit">Events · 6 countries</span>
-      </div>
-    </div>
-    <div class="engine-cell">
-      <div class="domain-label">MARS 7 — Yang-Mills / Quantum</div>
-      <h3>Gauge-Information Identity</h3>
-      <p>The engine's core computation — the squared norm of a six-dimensional state tensor — shares the same mathematical structure as the Yang-Mills Lagrangian density (Thm 3.5, academic paper under submission).</p>
-      <div class="engine-stat">
-        <span class="num">Thm 3.5</span>
-        <span class="unit">Finite lattice · Algebraic identity</span>
-      </div>
-    </div>
-    <div class="engine-cell">
-      <div class="domain-label">MARS 5 — ICU Biodynamics</div>
-      <h3>Hemodynamic Cascading Failure</h3>
-      <p>Treats the human body as a coupled multi-physics system. Computes cascading failure thresholds across cardiovascular, respiratory, and metabolic subsystems.</p>
-      <div class="engine-stat">
-        <span class="num" style="color:var(--text-dim);font-size:1.2rem;">Verification Pending</span>
-        <span class="unit">Data acquisition phase</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="engine-note reveal">
-    <p><strong>g<sub>c</sub> ≈ 1.20</strong> (finance) and <strong>g<sub>c</sub> ≈ 1.25</strong> (seismic) — critical thresholds discovered independently in different domains with zero shared code. The universality of these values is the proof.</p>
-  </div>
+<div class="reveal">
+<div class="section-label">02 — The HYPER-PRISM Engine</div>
+<h2 class="thesis-heading" data-lang="en" style="max-width:750px">One engine. Zero code changes.<br>Every domain computable.</h2>
+<h2 class="thesis-heading" data-lang="ko" style="max-width:750px">하나의 엔진. 코드 변경 제로.<br>모든 도메인 연산 가능.</h2>
+<h2 class="thesis-heading" data-lang="ja" style="max-width:750px">一つのエンジン。コード変更ゼロ。<br>あらゆるドメインを演算。</h2>
+<p class="thesis-text" data-lang="en" style="max-width:650px;margin-bottom:0">The engine computes Level 2 Geometric State Data — geometric state scalar, intrinsic time, tunneling probability — as domain-invariant physical quantities. Only the input adapter changes between domains.</p>
+<p class="thesis-text" data-lang="ko" style="max-width:650px;margin-bottom:0">엔진은 Level 2 기하학적 상태 데이터 — 기하학적 상태 스칼라, 고유 시간, 터널링 확률 — 를 도메인 불변 물리량으로 연산합니다. 도메인 간 변경되는 것은 입력 어댑터뿐입니다.</p>
+<p class="thesis-text" data-lang="ja" style="max-width:650px;margin-bottom:0">エンジンはLevel 2幾何学的状態データ — 幾何学的状態スカラー、固有時間、トンネリング確率 — をドメイン不変の物理量として演算します。ドメイン間で変更されるのは入力アダプターのみです。</p>
+</div>
+<div class="engine-grid reveal">
+<div class="engine-cell">
+<div class="domain-label">MARS 3 — Financial Markets</div>
+<h3 data-lang="en">Capital Phase Transitions</h3><h3 data-lang="ko">자본 위상 전이</h3><h3 data-lang="ja">資本の相転移</h3>
+<p data-lang="en">Computes the thermodynamic structure of capital flow. Diagnoses market state through geometric state scalar — not price prediction, but reality-state computation.</p>
+<p data-lang="ko">자본 흐름의 열역학적 구조를 연산합니다. 기하학적 상태 스칼라를 통해 시장 상태를 진단합니다 — 가격 예측이 아닌 현실 상태 연산입니다.</p>
+<p data-lang="ja">資本フローの熱力学的構造を演算します。幾何学的状態スカラーによる市場状態を診断します — 価格予測ではなく、現実状態の演算です。</p>
+<div class="engine-stat"><span class="num">g<sub style="font-size:.6em">c</sub> ≈ 1.20</span><span class="unit" data-lang="en">Critical threshold</span><span class="unit" data-lang="ko">임계 역치</span><span class="unit" data-lang="ja">臨界閾値</span></div>
+</div>
+<div class="engine-cell">
+<div class="domain-label">MARS 4 — Seismic Dynamics</div>
+<h3 data-lang="en">Tectonic Stress Accumulation</h3><h3 data-lang="ko">지각 응력 축적</h3><h3 data-lang="ja">地殻応力蓄積</h3>
+<p data-lang="en">Computes subsurface stress structure across fault systems. 14 events verified across 6 countries (M5.5–M9.0), where the statistical baseline achieves 0% recall on M≥6.</p>
+<p data-lang="ko">단층 시스템 전반의 지하 응력 구조를 연산합니다. 6개국 14개 지진(M5.5–M9.0)이 검증되었으며, 통계 기준선은 M≥6에서 재현율 0%입니다.</p>
+<p data-lang="ja">断層システム全体の地下応力構造を演算します。6カ国14地震（M5.5–M9.0）で検証が完了しており、統計ベースラインはM≥6で再現率0%です。</p>
+<div class="engine-stat"><span class="num">14/14</span><span class="unit" data-lang="en">Events · 6 countries</span><span class="unit" data-lang="ko">이벤트 · 6개국</span><span class="unit" data-lang="ja">イベント · 6カ国</span></div>
+</div>
+<div class="engine-cell">
+<div class="domain-label">MARS 7 — Yang-Mills / Quantum</div>
+<h3 data-lang="en">Gauge-Information Identity</h3><h3 data-lang="ko">게이지-정보 항등식</h3><h3 data-lang="ja">ゲージ情報恒等式</h3>
+<p data-lang="en">The engine's core computation — the squared norm of a six-dimensional state tensor — shares the same mathematical structure as the Yang-Mills Lagrangian density (Thm 3.5, academic paper under submission).</p>
+<p data-lang="ko">엔진의 핵심 연산 — 6차원 상태 텐서의 노름 제곱 — 은 양-밀스 라그랑지안 밀도와 동일한 수학적 구조를 공유합니다 (Thm 3.5, 학술 논문 투고 준비 중).</p>
+<p data-lang="ja">エンジンの核心演算 — 6次元状態テンソルのノルム二乗 — はYang-Millsラグランジアン密度と同一の数学的構造を共有します（Thm 3.5、学術論文投稿準備中）。</p>
+<div class="engine-stat"><span class="num">Thm 3.5</span><span class="unit" data-lang="en">Finite lattice · Algebraic identity</span><span class="unit" data-lang="ko">유한 격자 · 대수적 항등식</span><span class="unit" data-lang="ja">有限格子 · 代数的恒等式</span></div>
+</div>
+<div class="engine-cell">
+<div class="domain-label">MARS 5 — ICU Biodynamics</div>
+<h3 data-lang="en">Hemodynamic Cascading Failure</h3><h3 data-lang="ko">혈역학적 연쇄 붕괴</h3><h3 data-lang="ja">血行動態カスケード障害</h3>
+<p data-lang="en">Treats the human body as a coupled multi-physics system. Computes cascading failure thresholds across cardiovascular, respiratory, and metabolic subsystems.</p>
+<p data-lang="ko">인체를 결합된 다중 물리 시스템으로 처리합니다. 심혈관, 호흡, 대사 하위 시스템 전반의 연쇄 붕괴 임계점을 연산합니다.</p>
+<p data-lang="ja">人体を結合された多重物理システムとして処理します。心血管、呼吸、代謝サブシステム全体のカスケード障害閾値を演算します。</p>
+<div class="engine-stat"><span class="num" style="color:var(--text-dim);font-size:1.2rem" data-lang="en">Verification Pending</span><span class="num" style="color:var(--text-dim);font-size:1.2rem" data-lang="ko">검증 대기 중</span><span class="num" style="color:var(--text-dim);font-size:1.2rem" data-lang="ja">検証保留中</span><span class="unit" data-lang="en">Data acquisition phase</span><span class="unit" data-lang="ko">데이터 확보 단계</span><span class="unit" data-lang="ja">データ取得段階</span></div>
+</div>
+</div>
+<div class="engine-note reveal">
+<p data-lang="en"><strong>g<sub>c</sub> ≈ 1.20</strong> (finance) and <strong>g<sub>c</sub> ≈ 1.25</strong> (seismic) — critical thresholds discovered independently in different domains with zero shared code. The domain-independent reproducibility of these values is the proof.</p>
+<p data-lang="ko"><strong>g<sub>c</sub> ≈ 1.20</strong> (금융)과 <strong>g<sub>c</sub> ≈ 1.25</strong> (지진) — 단 한 줄의 코드 공유도 없이 전혀 다른 도메인에서 독립적으로 발견된 임계값입니다. 이 수치들이 보여주는 도메인 독립적 재현성 자체가 곧 명백한 증거입니다.</p>
+<p data-lang="ja"><strong>g<sub>c</sub> ≈ 1.20</strong>（金融）と<strong>g<sub>c</sub> ≈ 1.25</strong>（地震）— 一行のコード共有もなく、全く異なるドメインで独立に発見された臨界値です。この数値が示すドメイン独立的再現性こそが明白な証拠です。</p>
+</div>
 </section>
 
-<!-- GAAS -->
 <section id="gaas">
-  <div class="reveal">
-    <div class="section-label">03 — Grounding-as-a-Service</div>
-    <div class="gaas-statement">RAG gives AI a textbook about swimming. GaaS gives AI <em>the physics of buoyancy itself.</em></div>
-  </div>
-
-  <div class="pipeline-visual reveal">
-    <div class="pipe-stage">
-      <div class="pipe-num">Stage 01</div>
-      <div class="pipe-title">Ingest</div>
-      <div class="pipe-desc">Raw domain signals enter the HYPER-PRISM Engine — market microstructure, seismic waveforms, biosignals, grid telemetry.</div>
-      <div class="pipe-output">L0 → Engine</div>
-    </div>
-    <div class="pipe-stage">
-      <div class="pipe-num">Stage 02</div>
-      <div class="pipe-title">Compute</div>
-      <div class="pipe-desc">Physics-law computation produces L2 Geometric State Data: g₀₀, τ, tunneling probability, BHS scores, phase state classification.</div>
-      <div class="pipe-output">Engine → L2 Data</div>
-    </div>
-    <div class="pipe-stage">
-      <div class="pipe-num">Stage 03</div>
-      <div class="pipe-title">Ground</div>
-      <div class="pipe-desc">L2 data streams into LLM context via MCP / API. The model reasons on physical reality — not probabilistic word patterns.</div>
-      <div class="pipe-output">L2 → LLM Context</div>
-    </div>
-  </div>
-
-  <div class="gaas-compare reveal">
-    <div class="compare-col">
-      <div class="compare-label">Standard RAG</div>
-      <div class="compare-item"><span class="compare-icon">—</span> Retrieves text from document databases</div>
-      <div class="compare-item"><span class="compare-icon">—</span> L1 observational data only</div>
-      <div class="compare-item"><span class="compare-icon">—</span> Deterministic guardrails on a dynamical system</div>
-      <div class="compare-item"><span class="compare-icon">—</span> Cannot detect physics-level critical states</div>
-    </div>
-    <div class="compare-col enhanced">
-      <div class="compare-label">GaaS via HYPER-PRISM</div>
-      <div class="compare-item"><span class="compare-icon">◆</span> Computes physical state from first principles</div>
-      <div class="compare-item"><span class="compare-icon">◆</span> L2 geometric state data — previously nonexistent</div>
-      <div class="compare-item"><span class="compare-icon">◆</span> Identifies singularities in system dynamics</div>
-      <div class="compare-item"><span class="compare-icon">◆</span> Provides physical cognition, not text retrieval</div>
-    </div>
-  </div>
+<div class="reveal">
+<div class="section-label">03 — Grounding-as-a-Service</div>
+<div class="gaas-statement" data-lang="en">RAG gives AI a textbook about swimming. GaaS gives AI <em>the physics of buoyancy itself.</em></div>
+<div class="gaas-statement" data-lang="ko">RAG가 AI에게 단순히 수영 교본을 쥐여주는 것이라면, GaaS는 AI에게 <em>'부력'이라는 물리 법칙 자체를 이식하는 것</em>입니다.</div>
+<div class="gaas-statement" data-lang="ja">RAGがAIに単に水泳の教科書を手渡すものだとすれば、GaaSはAIに<em>「浮力」という物理法則そのものを移植するもの</em>です。</div>
+</div>
+<div class="pipeline-visual reveal">
+<div class="pipe-stage">
+<div class="pipe-num">Stage 01</div>
+<div class="pipe-title" data-lang="en">Ingest</div><div class="pipe-title" data-lang="ko">수집</div><div class="pipe-title" data-lang="ja">取込</div>
+<div class="pipe-desc" data-lang="en">Raw domain signals enter the HYPER-PRISM Engine — market microstructure, seismic waveforms, biosignals, grid telemetry.</div>
+<div class="pipe-desc" data-lang="ko">원시 도메인 신호가 HYPER-PRISM 엔진에 유입 — 시장 미시구조, 지진파, 생체신호, 전력망 텔레메트리.</div>
+<div class="pipe-desc" data-lang="ja">生のドメイン信号がHYPER-PRISMエンジンに流入 — 市場ミクロ構造、地震波形、生体信号、電力網テレメトリ。</div>
+<div class="pipe-output">L0 → Engine</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-num">Stage 02</div>
+<div class="pipe-title" data-lang="en">Compute</div><div class="pipe-title" data-lang="ko">연산</div><div class="pipe-title" data-lang="ja">演算</div>
+<div class="pipe-desc" data-lang="en">Physics-law computation produces L2 Geometric State Data: g₀₀, τ, tunneling probability, BHS scores, phase state classification.</div>
+<div class="pipe-desc" data-lang="ko">물리 법칙 연산이 L2 기하학적 상태 데이터를 생산: g₀₀, τ, 터널링 확률, BHS 점수, 기하학적 상태 분류.</div>
+<div class="pipe-desc" data-lang="ja">物理法則演算がL2幾何学的状態データを生成: g₀₀、τ、トンネリング確率、BHSスコア、幾何学的状態分類。</div>
+<div class="pipe-output">Engine → L2 Data</div>
+</div>
+<div class="pipe-stage">
+<div class="pipe-num">Stage 03</div>
+<div class="pipe-title" data-lang="en">Ground</div><div class="pipe-title" data-lang="ko">접지</div><div class="pipe-title" data-lang="ja">接地</div>
+<div class="pipe-desc" data-lang="en">L2 data streams into LLM context via MCP / API. The model reasons on physical reality — not probabilistic word patterns.</div>
+<div class="pipe-desc" data-lang="ko">L2 데이터가 MCP / API를 통해 LLM 컨텍스트로 스트리밍. 모델은 확률적 단어 패턴이 아닌 물리적 현실에 기반하여 추론합니다.</div>
+<div class="pipe-desc" data-lang="ja">L2データがMCP / API経由でLLMコンテキストにストリーミング。モデルは確率的単語パターンではなく物理的現実に基づいて推論します。</div>
+<div class="pipe-output">L2 → LLM Context</div>
+</div>
+</div>
+<div class="gaas-compare reveal">
+<div class="compare-col">
+<div class="compare-label">Standard RAG</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">—</span> Retrieves text from document databases</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">—</span> L1 observational data only</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">—</span> Deterministic guardrails on a dynamical system</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">—</span> Cannot detect physics-level critical states</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">—</span> 문서 데이터베이스에서 텍스트를 검색</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">—</span> L1 관찰 데이터만 사용</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">—</span> 동적 시스템에 결정론적 가드레일 적용</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">—</span> 물리 수준의 임계 상태 감지 불가</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">—</span> 文書データベースからテキストを検索</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">—</span> L1観測データのみ使用</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">—</span> 動的システムに決定論的ガードレールを適用</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">—</span> 物理レベルの臨界状態を検知不可</div>
+</div>
+<div class="compare-col enhanced">
+<div class="compare-label">GaaS via HYPER-PRISM</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">◆</span> Computes physical state from first principles</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">◆</span> L2 geometric state data — previously nonexistent</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">◆</span> Identifies singularities in system dynamics</div>
+<div class="compare-item" data-lang="en"><span class="compare-icon">◆</span> Provides physical cognition, not text retrieval</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">◆</span> 제1원리에서 물리적 상태를 연산</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">◆</span> L2 기하학적 상태 데이터 — 이전에 존재하지 않던 데이터</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">◆</span> 시스템 동역학의 특이점 식별</div>
+<div class="compare-item" data-lang="ko"><span class="compare-icon">◆</span> 텍스트 검색이 아닌 물리적 인지 제공</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">◆</span> 第一原理から物理状態を演算</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">◆</span> L2幾何学的状態データ — 従来存在しなかったデータ</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">◆</span> システム力学の特異点を識別</div>
+<div class="compare-item" data-lang="ja"><span class="compare-icon">◆</span> テキスト検索ではなく物理的認知を提供</div>
+</div>
+</div>
 </section>
 
-<!-- PARTNERS -->
 <section id="partners">
-  <div class="reveal">
-    <div class="section-label" style="text-align:center;">04 — Delivery</div>
-    <h2 class="partners-heading">The Physics Layer for AGI</h2>
-    <p class="partners-sub">We supply the grounding data that LLM companies and World Model builders cannot produce internally. Four delivery channels, one engine.</p>
-  </div>
-  <div class="delivery-grid reveal">
-    <div class="delivery-card">
-      <div class="d-icon">MCP</div>
-      <h4>Anthropic Path</h4>
-      <p>Native Model Context Protocol integration. L2 data streams directly into Claude's context window.</p>
-    </div>
-    <div class="delivery-card">
-      <div class="d-icon">API</div>
-      <h4>REST / Function Calling</h4>
-      <p>OpenAI-compatible function calling wrapper. Standard JSON schema for any LLM provider.</p>
-    </div>
-    <div class="delivery-card">
-      <div class="d-icon">SaaS</div>
-      <h4>PRISM Mirror Dashboard</h4>
-      <p>Real-time monitoring of L2 geometric state across subscribed domains. Enterprise web interface.</p>
-    </div>
-    <div class="delivery-card">
-      <div class="d-icon">License</div>
-      <h4>Tier 1 On-Premise</h4>
-      <p>Full engine deployment behind your firewall. HSM+TEE source protection. For sovereign AI programs.</p>
-    </div>
-  </div>
-  <div class="reveal" style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:1rem;">
-    <div style="text-align:center;">
-      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">23+</div>
-      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Patents Filed</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">118+</div>
-      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Claims</div>
-    </div>
-    <div style="text-align:center;">
-      <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold);">2 Axes</div>
-      <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase;margin-top:0.3rem;">Orthogonal Protection</div>
-    </div>
-  </div>
+<div class="reveal">
+<div class="section-label" style="text-align:center">04 — Delivery</div>
+<h2 class="partners-heading" data-lang="en">The Physics Layer for AGI</h2>
+<h2 class="partners-heading" data-lang="ko">AGI를 위한 물리 계층</h2>
+<h2 class="partners-heading" data-lang="ja">AGIのための物理レイヤー</h2>
+<p class="partners-sub" data-lang="en">We supply the grounding data that LLM companies and World Model builders cannot produce internally. Four delivery channels, one engine.</p>
+<p class="partners-sub" data-lang="ko">LLM 기업과 월드 모델 빌더가 자체적으로 생산할 수 없는 접지 데이터를 공급합니다. 4개 전달 채널, 하나의 엔진.</p>
+<p class="partners-sub" data-lang="ja">LLM企業やワールドモデル構築者が内部で生産できない接地データを供給します。4つの配信チャネル、1つのエンジン。</p>
+</div>
+<div class="delivery-grid reveal">
+<div class="delivery-card"><div class="d-icon">MCP</div><h4>Anthropic Path</h4>
+<p data-lang="en">Native Model Context Protocol integration. L2 data streams directly into Claude's context window.</p>
+<p data-lang="ko">네이티브 Model Context Protocol 연동. L2 데이터가 Claude의 컨텍스트 윈도우에 직접 스트리밍.</p>
+<p data-lang="ja">ネイティブModel Context Protocol統合。L2データがClaudeのコンテキストウィンドウに直接ストリーミング。</p>
+</div>
+<div class="delivery-card"><div class="d-icon">API</div><h4>REST / Function Calling</h4>
+<p data-lang="en">OpenAI-compatible function calling wrapper. Standard JSON schema for any LLM provider.</p>
+<p data-lang="ko">OpenAI 호환 함수 호출 래퍼. 모든 LLM 제공자를 위한 표준 JSON 스키마.</p>
+<p data-lang="ja">OpenAI互換ファンクションコーリングラッパー。全LLMプロバイダー向け標準JSONスキーマ。</p>
+</div>
+<div class="delivery-card"><div class="d-icon">SaaS</div><h4>PRISM Mirror Dashboard</h4>
+<p data-lang="en">Real-time monitoring of L2 geometric state across subscribed domains. Enterprise web interface.</p>
+<p data-lang="ko">구독 도메인 전반의 L2 기하학적 상태 실시간 모니터링. 엔터프라이즈 웹 인터페이스.</p>
+<p data-lang="ja">サブスクリプションドメイン全体のL2幾何学的状態リアルタイム監視。エンタープライズWebインターフェース。</p>
+</div>
+<div class="delivery-card"><div class="d-icon">License</div><h4>Tier 1 On-Premise</h4>
+<p data-lang="en">Full engine deployment behind your firewall. HSM+TEE source protection. For sovereign AI programs.</p>
+<p data-lang="ko">방화벽 내 풀 엔진 배포. HSM+TEE 소스 보호. 주권 AI 프로그램 대상.</p>
+<p data-lang="ja">ファイアウォール内フルエンジン展開。HSM+TEEソース保護。ソブリンAIプログラム向け。</p>
+</div>
+</div>
+<div class="reveal" style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;margin-top:1rem">
+<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold)">23+</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="en">Patents Filed</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ko">특허 출원</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ja">特許出願</div></div>
+<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold)">118+</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="en">Claims</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ko">청구항</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ja">請求項</div></div>
+<div style="text-align:center"><div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:500;color:var(--gold)">2 Axes</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="en">Orthogonal Protection</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ko">직교 보호 축</div><div style="font-family:var(--font-mono);font-size:.65rem;letter-spacing:.12em;color:var(--text-dim);text-transform:uppercase;margin-top:.3rem" data-lang="ja">直交保護軸</div></div>
+</div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
-  <div class="contact-left reveal">
-    <div class="section-label">05 — Contact</div>
-    <h2 class="contact-heading">Build on the<br>physics layer.</h2>
-    <p class="contact-text">For partnership inquiries, research collaboration, and enterprise licensing. We supply the data your models need to be grounded in physical reality.</p>
-    <a href="mailto:phillip@hyperfint-labs.com" class="contact-cta">Get in Touch →</a>
-  </div>
-  <div class="contact-right reveal">
-    <div class="contact-info-item">
-      <div class="ci-label">Headquarters</div>
-      <div class="ci-value">Seoul, Republic of Korea</div>
-    </div>
-    <div class="contact-info-item">
-      <div class="ci-label">Focus Areas</div>
-      <div class="ci-value">LLM Grounding · AI Safety · World Models</div>
-    </div>
-    <div class="contact-info-item">
-      <div class="ci-label">Delivery</div>
-      <div class="ci-value">MCP · API · SaaS · On-Premise License</div>
-    </div>
-  </div>
+<div class="contact-left reveal">
+<div class="section-label">05 — Contact</div>
+<h2 class="contact-heading" data-lang="en">Build on the<br>physics layer.</h2>
+<h2 class="contact-heading" data-lang="ko">AI에 물리적 현실을<br>접지하세요.</h2>
+<h2 class="contact-heading" data-lang="ja">AIに物理的現実を<br>接地してください。</h2>
+<p class="contact-text" data-lang="en">For partnership inquiries, research collaboration, and enterprise licensing. We supply the data your models need to be grounded in physical reality.</p>
+<p class="contact-text" data-lang="ko">파트너십 문의, 연구 협력, 엔터프라이즈 라이선스. 모델이 물리적 현실에 접지되기 위해 필요한 데이터를 공급합니다.</p>
+<p class="contact-text" data-lang="ja">パートナーシップのお問い合わせ、研究協力、エンタープライズライセンス。モデルが物理的現実に接地するために必要なデータを供給します。</p>
+<a href="mailto:phillip@hyperfint-labs.com" class="contact-cta"><span data-lang="en">Get in Touch →</span><span data-lang="ko">문의하기 →</span><span data-lang="ja">お問い合わせ →</span></a>
+</div>
+<div class="contact-right reveal">
+<div class="contact-info-item"><div class="ci-label">Headquarters</div><div class="ci-value" data-lang="en">Seoul, Republic of Korea</div><div class="ci-value" data-lang="ko">대한민국, 서울</div><div class="ci-value" data-lang="ja">大韓民国、ソウル</div></div>
+<div class="contact-info-item"><div class="ci-label">Focus Areas</div><div class="ci-value">LLM Grounding · AI Safety · World Models</div></div>
+<div class="contact-info-item"><div class="ci-label">Delivery</div><div class="ci-value">MCP · API · SaaS · On-Premise License</div></div>
+</div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="footer-left">© 2026 HYPERFINT LABS. All rights reserved.</div>
-  <div class="footer-right">Computed Reality, Unwavering Intelligence.</div>
+<div class="footer-left">© 2026 HYPERFINT LABS. All rights reserved.</div>
+<div class="footer-right" data-lang="en">Computed Reality, Unwavering Intelligence.</div>
+<div class="footer-right" data-lang="ko">연산된 현실, 흔들리지 않는 지능.</div>
+<div class="footer-right" data-lang="ja">演算された現実、揺るぎなき知能。</div>
 </footer>
 
-<!-- SCRIPTS -->
 <script>
-// Scroll reveal
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.15 });
-reveals.forEach(el => observer.observe(el));
-
-// Hero canvas - minimal particle field
-const canvas = document.getElementById('hero-canvas');
-const ctx = canvas.getContext('2d');
-let w, h, particles = [];
-
-function resize() {
-  w = canvas.width = canvas.offsetWidth;
-  h = canvas.height = canvas.offsetHeight;
+function setLang(lang){
+document.documentElement.lang=lang;
+document.querySelectorAll('[data-lang]').forEach(el=>{el.style.display='none'});
+document.querySelectorAll('[data-lang="'+lang+'"]').forEach(el=>{
+var tag=el.tagName.toLowerCase();
+if(el.parentElement&&el.parentElement.tagName.toLowerCase()==='a'){el.style.display='inline'}
+else if(tag==='div'||tag==='p'||tag==='h1'||tag==='h2'||tag==='h3'){el.style.display='block'}
+else{el.style.display='inline'}
+});
+document.querySelectorAll('.lang-switch button').forEach(b=>b.classList.remove('active'));
+var btn=document.querySelector('.lang-switch button[onclick="setLang(\''+lang+'\')"]');
+if(btn)btn.classList.add('active');
+try{localStorage.setItem('hf-lang',lang)}catch(e){}
 }
-resize();
-window.addEventListener('resize', resize);
+(function(){var s=null;try{s=localStorage.getItem('hf-lang')}catch(e){}
+var l=s||(navigator.language.startsWith('ko')?'ko':navigator.language.startsWith('ja')?'ja':'en');
+setLang(l)})();
 
-const N = Math.min(120, Math.floor(window.innerWidth / 12));
-for (let i = 0; i < N; i++) {
-  particles.push({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    r: Math.random() * 1.5 + 0.5
-  });
-}
+var reveals=document.querySelectorAll('.reveal');
+var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:.15});
+reveals.forEach(function(el){observer.observe(el)});
 
-function draw() {
-  ctx.clearRect(0, 0, w, h);
-  for (let i = 0; i < particles.length; i++) {
-    const p = particles[i];
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-    if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(209,74,31,0.4)';
-    ctx.fill();
-    // connections
-    for (let j = i + 1; j < particles.length; j++) {
-      const q = particles[j];
-      const dx = p.x - q.x, dy = p.y - q.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 150) {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(q.x, q.y);
-        ctx.strokeStyle = `rgba(15,106,139,${0.12 * (1 - dist / 150)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(draw);
-}
+var canvas=document.getElementById('hero-canvas'),ctx=canvas.getContext('2d'),w,h,particles=[];
+function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight}
+resize();window.addEventListener('resize',resize);
+var N=Math.min(120,Math.floor(window.innerWidth/12));
+for(var i=0;i<N;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5})}
+function draw(){ctx.clearRect(0,0,w,h);for(var i=0;i<particles.length;i++){var p=particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(209,74,31,0.4)';ctx.fill();for(var j=i+1;j<particles.length;j++){var q=particles[j],dx=p.x-q.x,dy=p.y-q.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<150){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(15,106,139,'+(.12*(1-dist/150))+')';ctx.lineWidth=.5;ctx.stroke()}}}requestAnimationFrame(draw)}
 draw();
 </script>
-
 </body>
 </html>
