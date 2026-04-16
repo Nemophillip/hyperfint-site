@@ -168,6 +168,16 @@ footer{padding:3rem;border-top:1px solid var(--border);display:flex;justify-cont
 <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ko">100% 재현율 · 0.72% 경보율 기준 | ETAS M≥6 재현율: 0%</span>
 <span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ja">100%再現率・0.72%警報率基準 | ETAS M≥6再現率：0%</span>
 </div>
+<div style="text-align:center;margin-top:0.4rem;opacity:0;animation:fadeUp .8s 1.2s forwards">
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="en">ROC AUC: g_c 20-threshold sweep · 12 events · retrospective</span>
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ko">ROC AUC: g_c 20단계 임계값 스윕 · 12개 이벤트 · 후향적 분석</span>
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ja">ROC AUC: g_c 20段階閾値スイープ · 12イベント · 後向き分析</span>
+</div>
+<div style="text-align:center;margin-top:0.4rem;opacity:0;animation:fadeUp .8s 1.3s forwards">
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="en">Physics engine layer · Domain switching via input adapter replacement only</span>
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ko">물리 엔진 레이어 기준 · 입력 어댑터 교체만으로 도메인 전환</span>
+<span style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-secondary);letter-spacing:0.06em" data-lang="ja">物理エンジンレイヤー基準 · 入力アダプター交換のみでドメイン切替</span>
+</div>
 </div>
 <div class="hero-scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
@@ -244,9 +254,9 @@ footer{padding:3rem;border-top:1px solid var(--border);display:flex;justify-cont
 <div class="engine-cell">
 <div class="domain-label">MARS 7 — Yang-Mills / Quantum</div>
 <h3 data-lang="en">Gauge-Information Identity</h3><h3 data-lang="ko">게이지-정보 항등식</h3><h3 data-lang="ja">ゲージ情報恒等式</h3>
-<p data-lang="en">The engine's core computation — the squared norm of a six-dimensional state tensor — shares the same mathematical structure as the Yang-Mills Lagrangian density (Thm 3.5, academic paper under submission).</p>
-<p data-lang="ko">엔진의 핵심 연산 — 6차원 상태 텐서의 노름 제곱 — 은 양-밀스 라그랑지안 밀도와 동일한 수학적 구조를 공유합니다 (Thm 3.5, 학술 논문 투고 준비 중).</p>
-<p data-lang="ja">エンジンの核心演算 — 6次元状態テンソルのノルム二乗 — はYang-Millsラグランジアン密度と同一の数学的構造を共有します（Thm 3.5、学術論文投稿準備中）。</p>
+<p data-lang="en">A structural correspondence has been confirmed between the engine's core computation — the squared norm of a six-dimensional state tensor — and the Yang-Mills Lagrangian density, as an algebraic identity (Thm 3.5, academic paper under submission).</p>
+<p data-lang="ko">엔진의 핵심 연산 — 6차원 상태 텐서의 노름 제곱 — 과 양-밀스 라그랑지안 밀도 사이의 대수적 항등식으로서의 구조적 대응을 확인했습니다 (Thm 3.5, 학술 논문 투고 준비 중).</p>
+<p data-lang="ja">エンジンの核心演算 — 6次元状態テンソルのノルム二乗 — とYang-Millsラグランジアン密度との間で、代数的恒等式としての構造的対応を確認しました（Thm 3.5、学術論文投稿準備中）。</p>
 <div class="engine-stat"><span class="num">Thm 3.5</span><span class="unit" data-lang="en">Finite lattice · Algebraic identity</span><span class="unit" data-lang="ko">유한 격자 · 대수적 항등식</span><span class="unit" data-lang="ja">有限格子 · 代数的恒等式</span></div>
 </div>
 <div class="engine-cell">
@@ -259,9 +269,9 @@ footer{padding:3rem;border-top:1px solid var(--border);display:flex;justify-cont
 </div>
 </div>
 <div class="engine-note reveal">
-<p data-lang="en"><strong>g<sub>c</sub> ≈ 1.20</strong> (finance) and <strong>g<sub>c</sub> ≈ 1.25</strong> (seismic) — critical thresholds discovered independently in different domains with zero shared code. The domain-independent reproducibility of these values is the proof.</p>
-<p data-lang="ko"><strong>g<sub>c</sub> ≈ 1.20</strong> (금융)과 <strong>g<sub>c</sub> ≈ 1.25</strong> (지진) — 단 한 줄의 코드 공유도 없이 전혀 다른 도메인에서 독립적으로 발견된 임계값입니다. 이 수치들이 보여주는 도메인 독립적 재현성 자체가 곧 명백한 증거입니다.</p>
-<p data-lang="ja"><strong>g<sub>c</sub> ≈ 1.20</strong>（金融）と<strong>g<sub>c</sub> ≈ 1.25</strong>（地震）— 一行のコード共有もなく、全く異なるドメインで独立に発見された臨界値です。この数値が示すドメイン独立的再現性こそが明白な証拠です。</p>
+<p data-lang="en"><strong>g<sub>c</sub> ≈ 1.20</strong> (finance) and <strong>g<sub>c</sub> ≈ 1.25</strong> (seismic) — critical thresholds derived independently across entirely different domains with zero shared code. The financial and seismic validations were conducted independently with no cross-referencing; their convergence was discovered only upon post-hoc comparison. The convergence is the evidence.</p>
+<p data-lang="ko"><strong>g<sub>c</sub> ≈ 1.20</strong> (금융)과 <strong>g<sub>c</sub> ≈ 1.25</strong> (지진) — 단 한 줄의 코드 공유도 없이 전혀 다른 도메인에서 독립적으로 도출된 임계값입니다. 금융 도메인 검증과 지진 도메인 검증은 서로의 결과를 참조하지 않고 독립적으로 수행되었으며, 사후 비교에서 처음으로 수렴이 확인되었습니다. 이 수렴 자체가 증거입니다.</p>
+<p data-lang="ja"><strong>g<sub>c</sub> ≈ 1.20</strong>（金融）と<strong>g<sub>c</sub> ≈ 1.25</strong>（地震）— コード共有ゼロで、全く異なるドメインにおいて独立して導出された臨界値です。金融ドメイン検証と地震ドメイン検証は互いの結果を参照せず独立して実施され、事後の比較において初めて収束が確認されました。この収束自体が証拠です。</p>
 </div>
 </section>
 
